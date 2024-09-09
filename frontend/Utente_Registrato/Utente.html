@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il Mio Profilo</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+    <script type="text/javascript" src="../static/js/javascript.js"></script>
+     <!-- Script personalizzato per cancellare un'appuntamento -->
+     <script>
+      function deleteAppointment(appointmentId) {
+          console.log('Deleting appointment with ID:', appointmentId);  // Verifica l'ID dell'appuntamento
+          fetch('/appointments/delete', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ 'appointment_id': appointmentId })
+          })
+          .then(response => response.json())
+          .then(data => {
+              alert(data.message);
+              location.reload();  // Ricarica la pagina dopo la cancellazione
+          })
+          .catch(error => console.error('Error:', error));
+      }
+
+
+  </script>
+</head>
+<body >
+    <header >
+        <div class="flex-container">
+          <div class="logo">
+            <a href="REGHome.html">
+              <img src="../static/images/logo.png" alt="Logo">
+            </a>
+          </div>
+          <div style="margin: 10px;">
+            <h1>ADV BRIDGE</h1>
+          </div>
+          <div>
+            <h1>⎹</h1>
+          </div>
+          <div style="margin: 10px;">
+            <a href="Amici.html">Amici</a>
+          </div>
+          <div style="margin: 10px;">
+            <a href="Newsletter.html">Newsletter</a>
+          </div>
+          <div style="margin: 10px;">
+            <a href="Chi_siamo.html">Chi Siamo</a>
+          </div>
+          <div style="margin: 10px;">
+            <a href="Tutorial.html">Tutorial</a>
+          </div>
+          <div style="margin: 10px;">
+            <a href="Tornei.html">Iscriviti Torneo</a>
+          </div>
+          <div style="margin: 10px;">
+            <a href="Storico.html">Storico Partite</a>
+          </div>
+          <div class="right">
+            <img src="../static/images/profile.png" onclick="toggleMenu()" style="width: 50px;margin-right: 60px;">
+            <div id="myMenu" class="menu" style="display: none;">
+              <a href="utente.html">Profilo</a>
+              <a href="disconnettiti.php">Esci</a>
+            </div>
+          </div>
+        </div>
+      </header>
+    
+    <section class="main-content">
+        <div class="container">
+            <div class="user-info">
+                <h1>Benvenuto nel tuo profilo</h1>
+                <h2>Informazioni Utente</h2>
+                <ul>
+                    <li><strong>Nome:</strong> {{ user.nome }}</li>
+                    <li><strong>Cognome:</strong> {{ user.cognome }}</li>
+                    <li><strong>Username:</strong> {{ user.username }}</li>
+                    <li><strong>Email:</strong> {{ user.email }}</li>
+                    <li><strong>Data di Nascita:</strong> {{ user.data_di_nascita }}</li>
+                    <li><strong>Telefono:</strong> {{ user.telefono }}</li>
+                </ul>
+            </div>
+            
+            <div class="user-description">
+                <h2>Descrizione</h2>
+                <p>{{ user.descrizione }}</p>
+            </div>
+            
+            <div class="user-actions">
+                <h2>Azioni Utente</h2>
+                <ul>
+                    <li><a href="#">Modifica Profilo</a></li>
+                    <li><a href="#">Modifica Password</a></li>
+                    <li><a href="#">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container">
+          <h1 class="mt-5 mb-4">I miei appuntamenti</h1>
+
+          <div class="wrapper">
+            <div class="container">
+              <form role="search" method="get" class="search-form form" action="">
+                <label>
+                    <span class="screen-reader-text">Search for...</span>
+                    <input type="search" class="search-field" placeholder="Type something..." value="" name="s" title="" />
+                </label>
+                <input type="image" class="search-submit button" value="&#xf002" src="../static/images/lente.png"/>
+            </form>
+            </div>
+          </div>
+
+          <div id="myAppointmentsList">
+              {% for appointment in appointments %}
+                  <div class="card mb-3">
+                      <div class="card-body">
+                          <h5 class="card-title">Nome appuntamento: {{ appointment.schedule_name }}</h5>
+                          <p class="card-text">Prenotazione effettuata il: {{ appointment.created_on }}</p>
+                          <a onclick="deleteAppointment('{{ appointment.id }}')" class="button">Elimina prenotazione</a>
+                        </div>
+                  </div>
+              {% endfor %}
+          </div>
+        </div>
+    </section>
+    
+    <footer>
+      <div class="container">
+          <p><small><em>Copyright 2024 | Sito realizzato dalla classe 5FI dell’ITI G. Marconi di Verona durante l’anno scolastico 2023-2024</em></small></p>
+          <a href="Privacy.html">Privacy - Contatti</a>
+      </div>
+    </footer>
+</body>
+</html>

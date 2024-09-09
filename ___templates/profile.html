@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Profilo Utente</title>
+    <style>
+        li{
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Benvenuto nel Tuo Profilo</h1>
+        <div class="mt-4">
+            <p><strong>Nome Completo:</strong> {{ full_name }}</p>
+            <p><strong>Email:</strong> {{ email }}</p>
+            <p><strong>Telefono:</strong> {{ telefono }}</p>
+        </div>
+
+        <!-- Azioni disponibili -->
+        <h2 class="mt-5">Azioni</h2>
+        <ul class="list-unstyled">
+            <li><a href="/appointments/available" class="btn btn-primary mr-2">Visualizza Appuntamenti Disponibili</a></li>
+            <li><a href="/appointments/my_bookings" class="btn btn-primary mr-2">Visualizza le Tue Prenotazioni</a></li>
+        </ul>
+    </div>
+
+</body>
+</html>

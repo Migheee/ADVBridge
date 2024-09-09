@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Appointments</title>
+    <!-- Collegamento al foglio di stile di Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>I miei appuntamenti</h1>
+
+        <div id="myAppointmentsList">
+            {% for appointment in appointments %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Nome appuntamento: {{ appointment.schedule_name }}</h5>
+                        <p class="card-text">Prenotazione effettuata il: {{ appointment.created_on }}</p>
+                        <button onclick="deleteAppointment('{{ appointment.id }}')" class="btn btn-danger">Elimina prenotazione</button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+    <!-- Script personalizzato per cancellare un'appuntamento -->
+    <script>
+        function deleteAppointment(appointmentId) {
+            console.log('Deleting appointment with ID:', appointmentId);  // Verifica l'ID dell'appuntamento
+            fetch('/appointments/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 'appointment_id': appointmentId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();  // Ricarica la pagina dopo la cancellazione
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Appuntamenti Disponibili</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <!-- Includi Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Appuntamenti Disponibili</h1>
+        <div id="appointments" class="mt-4">
+            {% for appointment in appointments %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Titolo: {{ appointment.title }}</h5>
+                        <p class="card-text"><strong>ID: {{ appointment.id }}</strong></p>
+                        <p class="card-text"><strong>Descrizione:</strong> {{ appointment.description }}</p>
+                        <p class="card-text"><strong>Inizio:</strong> {{ appointment.start}}</p>
+                        <p class="card-text"><strong>Fine:</strong> {{ appointment.finish}}</p>
+                        <button class="btn btn-primary" onclick="bookAppointment(event, '{{ appointment.id }}')">Prenota Appuntamento</button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        // Funzione per gestire la prenotazione di un appuntamento
+        async function bookAppointment(event, slotId) {
+            event.preventDefault(); // Impedisce il comportamento predefinito del pulsante
+
+            const teamName = prompt('Inserisci il nome del tuo team:');
+            if (!teamName) return;
+
+            try {
+                const response = await fetch('/appointments/book', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'no-store, max-age=0'
+                    },
+                    body: JSON.stringify({
+                        slot_id: slotId,
+                        team_name: teamName
+                    })
+                });
+
+                const data = await response.json();
+                alert(data.message);
+
+            } catch (error) {
+                console.error('Errore durante la prenotazione dell\'appuntamento:', error);
+                alert('Impossibile prenotare l\'appuntamento. Si prega di riprovare.');
+            }
+        }
+    </script>
+  
+</body>
+</html>
